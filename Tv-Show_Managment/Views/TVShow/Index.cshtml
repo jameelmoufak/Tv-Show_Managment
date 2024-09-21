@@ -1,0 +1,89 @@
+﻿@using TV.Infrastructure.Repositories
+@using Tv_Show_Managment.Repositories
+@inject IRepository<Languages> langRepo
+@inject ITVShowRepository tvRepo
+@inject IStateRepository stateRepo
+@model TVShowModel
+@{
+    var langs = langRepo.GetAll();
+    TVShow? TvShowForUpdate = null;
+    if (stateRepo.GetValue("tvshowId") != " ")
+    {
+        TvShowForUpdate = tvRepo.GetTvShowWithDetails(Guid.Parse(stateRepo.GetValue("tvshowId")));
+
+    }
+
+
+}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-1">
+        <div class=" justify-content-center">
+            <fieldset class="justify-content-center">
+                <legend>Enter TV Show Informations</legend>
+                <form asp-controller="TVShow" asp-action="CreateOrUpdate" asp-route-TVShowId="@("")" method="post" enctype="multipart/form-data" class="justify-content-center">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <fieldset>
+                        <div class="form-group">
+                            <label asp-for="Title" class="control-label">Title:</label>
+                            <input value="@(TvShowForUpdate?.Title??"")" pattern="^[a-zA-Z-0-9- ]+$" asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                            <label asp-for="RealeseDate" class="control-label">Release Date:</label>
+                            <input type="date" value="2018-09-03" name="ReleaseDate" max="@DateOnly.FromDateTime(DateTime.UtcNow)" min="1990/01/01" asp-for="RealeseDate" class="form-control" />
+                            <span asp-validation-for="RealeseDate" class="text-danger"></span>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                            <label asp-for="Rating" class="control-label">Rate:</label>
+                            <input type="number" value="@(TvShowForUpdate?.Rating??3)" max="5" min="0" asp-for="Rating" class="form-control" />
+                            <span asp-validation-for="Rating" class="text-danger"></span>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                            <label asp-for="URL" class="control-label">URL:</label>
+                            <input type="url" value="@(TvShowForUpdate?.URL??"")" asp-for="URL" class="form-control" />
+                            <span asp-validation-for="URL" class="text-danger"></span>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-group">
+                            <label asp-for="File" class="control-label">Attachment:</label>
+                            <input type="file" asp-for="File" class=" form-control" accept=".png, .jpg, .jpeg">
+                            <span asp-validation-for="File" class="text-danger"></span>
+                        </div>
+                    </fieldset>
+                    <br />
+                    <fieldset>
+                            <label asp-for="LangId" class="control-label">Languages: </label>
+                        <div class="form-group">
+                            <select multiple asp-for="LangId">
+                                @foreach (var lang in langs)
+                                {
+                                    <option value="@lang.LanguagesId.ToString()">@lang.Name</option>
+
+                                }
+                            </select>
+                            <span asp-validation-for="LangId" class="text-danger"></span>
+                            <label>notice: for multiple options you can use "ctrl" with click in option</label>
+                        </div>
+                    </fieldset>
+                    <div class="d-flex justify-content-center form-group">
+                        <input type="submit" value="Submit" class="btn btn-outline-dark mt-auto"/>
+                        &nbsp;
+                        <input type="reset" value="Reset" class="btn btn-outline-dark mt-auto"/>
+                    </div>
+                </form>
+                <br/>
+                <div class="d-flex justify-content-center form-group">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-dark mt-auto">Cancel</a>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</section>
+

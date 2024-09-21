@@ -1,0 +1,52 @@
+﻿@model IList<TVShow>
+@{
+}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-2">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            @foreach (var tvshow in Model)
+            {
+                if (tvshow.IsHidden == false)
+                {
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <a asp-controller="Home"
+                               asp-action="Details"
+                               asp-route-TVShowId="@tvshow.TVShowId"
+                               asp-route-slug="@tvshow.Title.Replace(" ", "-").ToLower()">
+                                <img width="500" height="150" class="card-img-top" src="~/Attachments/@tvshow.Attachment.Name@tvshow.Attachment.FileType" alt="..." />
+                            </a>
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">@tvshow.Title</h5>
+                                    <!-- Product reviews-->
+                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                        @for (int i = 0; i < tvshow.Rating; i++)
+                                        {
+                                            <div class="bi-star-fill"></div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center">
+                                    <a asp-controller="TVShow" asp-action="Index" asp-route-TVShowId="@tvshow.TVShowId.ToString()" class="btn btn-outline-dark mt-auto">
+                                        Update
+                                    </a>
+                                    <a asp-controller="TVShow" asp-action="Remove" asp-route-id="@tvshow.TVShowId" class="btn btn-outline-dark mt-auto">
+                                        Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>

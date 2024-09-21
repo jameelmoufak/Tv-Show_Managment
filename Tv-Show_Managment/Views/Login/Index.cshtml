@@ -1,0 +1,28 @@
+﻿@{
+}
+@model LoginModel
+
+<h1 class="d-flex justify-content-center">Please Enter Your User Name and Password</h1>
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            <form asp-action="Login" class="justify-content-center">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Username" class="control-label">UserName: &nbsp;</label>
+                    <input asp-for="Username" class="form-control" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label">Password: &nbsp;</label>
+                    <input type="password" asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Login" class="btn btn-outline-dark mt-auto" />
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<h6 class="d-flex justify-content-center">hint: user= jameel , pass= 1234</h6>
